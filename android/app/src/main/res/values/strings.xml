@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">BCS Mobile</string>
+    <string name="title_activity_main">BCS Mobile</string>
+    <string name="package_name">bcs.mobile</string>
+    <string name="custom_url_scheme">bcs.mobile</string>
+</resources>

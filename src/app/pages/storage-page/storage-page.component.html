@@ -1,0 +1,103 @@
+<ion-header>
+    <ion-toolbar (ionChange)="segmentChanged($event)">
+        <ion-buttons slot="start">
+            <ion-menu-button></ion-menu-button>
+            <ion-back-button 
+                *ngIf="path.length > 0"
+                text="Назад" 
+                defaultHref="/files"
+                (click)="path.pop(); fetch()"
+            ></ion-back-button>
+        </ion-buttons>
+        <ion-progress-bar type="indeterminate" *ngIf="loadingConfig.showLoader"></ion-progress-bar>
+    </ion-toolbar>
+</ion-header>
+
+<ion-content fullscreen>
+    <section class="storage">
+        <ion-item-divider>
+            <ion-label>
+              Папки
+            </ion-label>
+        </ion-item-divider>
+
+        <div class="folders" *ngIf="folders.length; else noOneFolder">
+            <ion-item-sliding 
+                *ngFor="let folder of folders" 
+                (click)="path.push(folder.title); fetch()"
+                class="folder"
+            > 
+                <ion-item-options 
+                    side="start"  
+                >
+                    <ion-item-option>Удалить</ion-item-option>
+                </ion-item-options>	
+                <ion-item>
+                    <ion-label>
+                        <p class="essence-title">{{ folder.title }}</p>
+                        <div class="essence-info">
+                            <p>{{ folder.uploadDate | date:'dd.MM.yyyy | HH.mm' }}</p>
+                        </div>
+                    </ion-label>
+                </ion-item>
+            </ion-item-sliding>
+        </div>
+        <ng-template #noOneFolder>
+            <ion-item>
+                <ion-label>Нет ни одной папки</ion-label>
+            </ion-item>
+        </ng-template>
+
+        <ion-item-divider>
+            <ion-label>
+              Файлы
+            </ion-label>
+        </ion-item-divider>
+
+        <div class="files" *ngIf="files.length; else noOneFile">
+            <ion-item-sliding 
+                *ngFor="let file of files"
+                class="file"
+            > 
+                <ion-item-options 
+                    side="start" 
+                >
+                    <ion-item-option (click)="deleteItem(file, 'file')">Удалить</ion-item-option>
+                </ion-item-options>	
+                <ion-item>
+                    <ion-label>
+                        <div class="avatar" *ngIf="isHasPreview(file)">
+                            <img [src]="filesService.getFileUrl(file)">
+                        </div>
+                        <p class="essence-title">{{ file.filename }}</p>
+                        <div class="essence-info">
+                            <p class="file-length">{{ getFileSize(file.length) }} МБ.</p>
+                            <p class="file-upload-date">{{ file.uploadDate | date:'dd.MM.yyyy | HH.mm' }}</p>
+                        </div>
+                    </ion-label>
+                </ion-item>
+            </ion-item-sliding>
+        </div>
+        <ng-template #noOneFile>
+            <ion-item>
+                <ion-label>Нет ни одной папки</ion-label>
+            </ion-item>
+        </ng-template>
+    </section>
+
+    <ion-fab vertical="bottom" horizontal="end" slot="fixed">
+        <ion-fab-button (click)="fileInput.click()">
+        <ion-icon name="add"></ion-icon>
+        </ion-fab-button>
+    </ion-fab>
+    <input
+        style="display: none"
+        #fileInput
+        type="file" (change)="uploadFile($event)" 
+    >
+    <ion-fab vertical="bottom" horizontal="start" slot="fixed">
+        <ion-fab-button (click)="createFolder()">
+        <ion-icon name="folder-outline"></ion-icon>
+        </ion-fab-button>
+    </ion-fab>
+</ion-content>

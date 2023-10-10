@@ -1,0 +1,44 @@
+<app-wrapper-table
+    *ngIf="!loadingConfig.isLoading; else loading"
+    class="ion-page" 
+    [items]="products"
+    [config]="{
+        pageName: 'allProducts',
+        pageType: 'products',
+        params: params
+    }"
+    [tableConfig]="{
+        filters: {
+            responsible: true
+        },
+        itemOptions: {
+            addItem: true,
+            deleteItem: true,
+            openCard: true
+        }
+    }"
+    (reloadData)="reloadData($event)"
+    (addItem)="addItem()"
+    (deleteItem)="deleteItem($event)"
+    (updateItem)="updateItem($event)"
+>
+    <ion-header>
+        <ion-toolbar (ionChange)="segmentChanged($event)">
+            <ion-buttons slot="start">
+                <ion-menu-button></ion-menu-button>
+            </ion-buttons>
+            <ion-progress-bar type="indeterminate" *ngIf="loadingConfig.showLoader"></ion-progress-bar>
+            <ion-segment [value]="params.tab">
+                <ion-segment-button value="all">
+                    Все
+                </ion-segment-button>
+                <ion-segment-button value="disqualified">
+                    Удалённые
+                </ion-segment-button>
+            </ion-segment>
+        </ion-toolbar>
+    </ion-header>
+</app-wrapper-table>
+<ng-template #loading>
+    <app-loader class="ion-page"></app-loader>
+</ng-template>

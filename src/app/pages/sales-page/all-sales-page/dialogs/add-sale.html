@@ -1,0 +1,32 @@
+<ion-header translucent>
+    <ion-toolbar>
+        <ion-title>Создать продажу</ion-title>
+        <ion-buttons slot="end">
+            <ion-button (click)="modalController.dismiss()">Закрыть</ion-button>
+        </ion-buttons> 
+    </ion-toolbar>
+</ion-header>
+<ion-content fullscreen>
+    <form [formGroup]="saleFormGroup" (submit)="onSubmit()">
+        <ion-item>
+            <ion-label position="floating">Введите имя</ion-label>
+            <ion-input formControlName="name" required></ion-input>
+        </ion-item>
+        <ion-item>
+            <ion-label position="floating">Введите телефон</ion-label>
+            <ion-input formControlName="phone"></ion-input>
+        </ion-item>
+        <ion-item>
+            <ion-label position="floating">Введите email</ion-label>
+            <ion-input formControlName="email"></ion-input>
+        </ion-item>
+
+        <ion-button 
+            color="warning" 
+            expand="full" 
+            type="submit" 
+            class="button-submit"
+            [disabled]="saleFormGroup.invalid"
+        >Создать</ion-button>
+    </form>
+</ion-content>

@@ -1,0 +1,34 @@
+<ion-header translucent>
+    <ion-toolbar>
+        <ion-title>Создать папку</ion-title>
+        <ion-buttons slot="end">
+            <ion-button (click)="modalController.dismiss()">Закрыть</ion-button>
+        </ion-buttons> 
+    </ion-toolbar>
+</ion-header>
+<ion-content fullscreen>
+    <form [formGroup]="folderFormGroup" (submit)="onSubmit()">
+        <ion-item>
+            <ion-label position="floating">Введите название</ion-label>
+            <ion-input formControlName="title" required></ion-input>
+        </ion-item>
+
+        <ion-button color="primary" expand="full" (click)="fileInput.click()">
+            <ion-icon name="add-outline"></ion-icon>
+        </ion-button>
+
+        <input
+            style="display: none"
+            #fileInput
+            type="file" (change)="onFileSelected($event)" 
+        >
+
+        <ion-button 
+            color="warning" 
+            expand="full" 
+            type="submit" 
+            class="button-submit"
+            [disabled]="folderFormGroup.invalid || !selectedFile"
+        >Создать</ion-button>
+    </form>
+</ion-content>

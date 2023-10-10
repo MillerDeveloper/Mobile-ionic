@@ -1,0 +1,26 @@
+.item-info {
+  .item-info__title, .item-info__name {
+    color: var(--ion-text-color);
+    font-size: 16px;
+    margin-bottom: 10px;
+  }
+
+  .item-info__dateCreated {
+    margin-top: 8px;
+    font-size: 14px;
+  }
+
+  .item-info__description {
+    white-space: initial;
+    margin-top: 10px;
+    color: rgba(var(--ion-text-color-rgb, 0, 0, 0), 0.4);
+    word-spacing: 0.8px;
+    letter-spacing: 0.4px;
+  }
+}
+
+.item-image img {
+  width: 50px;
+  height: 50px;
+  max-width: initial;
+}

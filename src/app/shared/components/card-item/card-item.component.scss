@@ -1,0 +1,38 @@
+.side-tabs {
+    margin-bottom: 50px;
+}
+
+.avatar {
+    margin: 5px 20px;
+    img {
+        width: 100%;
+        border-radius: 5px;
+    }
+}
+
+.tabs {
+    display: block;
+    width: 100%;
+
+    .tab {
+        margin-top: 5px;
+        margin-bottom: 5px;
+        cursor: pointer;
+        
+        .tab-label {
+            padding: 10px 0;
+            margin: 0 20px;
+            background: var(--ion-color-light-shade);
+            text-align: center;
+            border-radius: 5px;
+        }
+
+        .tab-content {
+            transition: all 0.5s;
+        }
+    }
+}
+
+.custom-field.state {
+    margin: 0 20px;
+}

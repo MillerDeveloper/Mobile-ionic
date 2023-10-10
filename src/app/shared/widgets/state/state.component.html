@@ -1,0 +1,17 @@
+<div class="states small" *ngIf="states.length">
+    <small class="states-title">{{ state?.name }}</small>
+    <div class="states-block">
+        <div 
+            *ngFor="let st of states; index as i;" 
+            class="states-box" 
+            (click)="
+                $event.stopPropagation(); 
+                changeState(i > state.index ? 'increment' : 'decrement', i > state.index ? i - state.index : state.index - i)"
+        >
+            <span class="state-line" [ngStyle]="{'background-color': state.color}" *ngIf="i !== state?.index; else currentState"></span>
+            <ng-template #currentState>
+                <span class="state-line active" [ngStyle]="{'border': '2px solid ' + state.color}"></span>
+            </ng-template>
+        </div>
+    </div>
+</div>

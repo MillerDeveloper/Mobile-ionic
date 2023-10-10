@@ -1,0 +1,13 @@
+<app-wrapper-table
+    *ngIf="!loadingConfig.isLoading; else loading"
+    [ngClass]="{'ion-page': item}"
+    [items]="meetings"
+    [config]="config"
+    [tableConfig]="tableConfig"
+    (reloadData)="reloadData($event)"
+    (addItem)="addItem()"
+    (deleteItem)="deleteItem($event)"
+></app-wrapper-table>
+<ng-template #loading>
+    <app-loader class="ion-page"></app-loader>
+</ng-template>

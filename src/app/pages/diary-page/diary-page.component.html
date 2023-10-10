@@ -1,0 +1,31 @@
+
+<ion-header translucent>
+  <ion-toolbar>     
+    <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+    <ion-segment 
+        (ionChange)="segmentChanged($event)"
+        [value]="pickedSegment"
+    >
+        <ion-segment-button value="tasks">
+          <ion-label>Задачи</ion-label>
+        </ion-segment-button>
+        <ion-segment-button value="meetings">
+          <ion-label>Встречи</ion-label>
+        </ion-segment-button>
+        <ion-segment-button value="logs">
+          <ion-label>Логи</ion-label>
+        </ion-segment-button>
+    </ion-segment>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content
+	fullscreen
+  [ngSwitch]="pickedSegment"
+> 
+  <app-tasks-page *ngSwitchCase="'tasks'"></app-tasks-page>
+  <app-meetings-page *ngSwitchCase="'meetings'"></app-meetings-page>
+  <app-logs-page *ngSwitchCase="'logs'"></app-logs-page>
+</ion-content>

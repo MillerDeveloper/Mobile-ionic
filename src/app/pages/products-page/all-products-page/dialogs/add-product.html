@@ -1,0 +1,44 @@
+<ion-header translucent>
+    <ion-toolbar>
+        <ion-title>Создать продукт</ion-title>
+        <ion-buttons slot="end">
+            <ion-button (click)="modalController.dismiss()">Закрыть</ion-button>
+        </ion-buttons> 
+    </ion-toolbar>
+</ion-header>
+<ion-content fullscreen>
+    <form [formGroup]="productFormGroup" (submit)="onSubmit()">
+        <ion-item>
+            <ion-label position="floating">Введите навание</ion-label>
+            <ion-input formControlName="title" required></ion-input>
+        </ion-item>
+        <ion-item>
+            <ion-label position="floating">Стоимость</ion-label>
+            <ion-input formControlName="price" type="number" required></ion-input>
+        </ion-item>
+        <ion-select 
+            multiple="true" 
+            cancelText="Отмена"
+            [interfaceOptions]="{
+                header: 'Валюта'
+            }"
+            position="floating"
+            formControlName="currency"
+        >
+            <ion-select-option 
+                *ngFor="let currency of currentCompany.settings.global.currencies"
+                [value]="currency"
+            >
+                {{ currency }}
+            </ion-select-option>
+        </ion-select>
+
+        <ion-button 
+            color="warning" 
+            expand="full" 
+            type="submit" 
+            class="button-submit"
+            [disabled]="productFormGroup.invalid"
+        >Создать</ion-button>
+    </form>
+</ion-content>

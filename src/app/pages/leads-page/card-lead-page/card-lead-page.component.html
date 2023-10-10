@@ -1,0 +1,30 @@
+<app-card-item
+    *ngIf="!loadingConfig.isLoading && lead; else loading"
+    class="ion-page"
+    [item]="lead"
+    [config]="{
+        pageName: 'cardLead',
+        pageType: 'leads',
+        params: {}
+    }"
+    (updateItemFields)="updateItemFields($event)"
+>
+    <ion-header>
+        <ion-toolbar>            
+            <ion-buttons slot="start">
+                <ion-back-button text="Назад" defaultHref="/leads"></ion-back-button>
+                <ion-menu-button></ion-menu-button>
+            </ion-buttons>
+            
+            <ion-buttons slot="primary">
+                <ion-button (click)="showActionButtons()">
+                  <ion-icon slot="icon-only" ios="ellipsis-horizontal" md="ellipsis-vertical"></ion-icon>
+                </ion-button>
+              </ion-buttons>
+            <ion-progress-bar type="indeterminate" *ngIf="loadingConfig.showLoader"></ion-progress-bar>
+        </ion-toolbar>
+    </ion-header>
+</app-card-item>
+<ng-template #loading>
+    <app-loader class="ion-page"></app-loader>
+</ng-template>

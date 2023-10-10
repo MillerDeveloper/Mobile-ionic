@@ -1,0 +1,8 @@
+{
+  "name": "BCS Mobile",
+  "integrations": {
+    "capacitor": {},
+    "cordova": {}
+  },
+  "type": "angular"
+}

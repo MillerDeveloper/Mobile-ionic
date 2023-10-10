@@ -1,0 +1,66 @@
+<ion-app>
+  <ion-menu side="start" menuId="first" contentId="content">
+    <ion-header>
+      <ion-toolbar>
+        <ion-title>Модули</ion-title>
+      </ion-toolbar>
+    </ion-header>
+    <ion-content>
+      <ion-list>
+      <ion-menu-toggle auto-hide="true">
+        <ion-item [routerLink]="'/leads'" routerDirection="forward">
+          Лиды
+        </ion-item>
+        <ion-item [routerLink]="'/sales'" routerDirection="forward">
+          Продажи
+        </ion-item>
+        <ion-item [routerLink]="'/products'" routerDirection="forward">
+          Продукты
+        </ion-item>
+        <ion-item [routerLink]="'/diary'" routerDirection="forward">
+          Ежедневник
+        </ion-item> 
+        <ion-item [routerLink]="'/counterparties'" routerDirection="forward">
+          Контрагенты
+        </ion-item> 
+        <ion-item [routerLink]="'/finances'" routerDirection="forward">
+          Финансы
+        </ion-item> 
+        <ion-item [routerLink]="'/files'" routerDirection="forward">
+          Файлы
+        </ion-item> 
+        <ion-item (click)="logOut()">
+          Выход
+        </ion-item>
+      </ion-menu-toggle>
+      </ion-list>
+    </ion-content>
+  </ion-menu>
+  
+  <ion-router-outlet id="content"></ion-router-outlet>
+</ion-app>
+<!-- 
+<ion-tabs>
+  <ion-tab-bar slot="bottom">
+    <ion-tab-button tab="leads">
+      <ion-icon name="leads"></ion-icon>
+      <ion-label>Лиды</ion-label>
+      <ion-badge>6</ion-badge>
+    </ion-tab-button>
+
+    <ion-tab-button tab="sales">
+      <ion-icon name="person-circle"></ion-icon>
+      <ion-label>Продажи</ion-label>
+    </ion-tab-button>
+
+    <ion-tab-button tab="products">
+      <ion-icon name="map"></ion-icon>
+      <ion-label>Продукты</ion-label>
+    </ion-tab-button>
+
+    <ion-tab-button tab="diary">
+      <ion-icon name="information-circle"></ion-icon>
+      <ion-label>Ежедневник</ion-label>
+    </ion-tab-button>
+  </ion-tab-bar>
+</ion-tabs> -->

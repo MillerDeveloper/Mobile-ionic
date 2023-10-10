@@ -1,0 +1,27 @@
+
+<ion-item>
+    <ion-searchbar 
+        animated 
+        placeholder="Поиск"
+        (ionInput)="filterField($event)"
+    ></ion-searchbar>
+</ion-item>
+<ion-item>
+    <ion-select 
+        *ngIf="tableConfig.filters.responsible"
+        multiple="true" 
+        cancelText="Отмена"
+        [value]="[userEntities.currentUser._id]"
+        [interfaceOptions]="{
+            header: 'Ответственный'
+        }"
+        (ionChange)="setFilter($event, 'responsible')"
+    >
+        <ion-select-option 
+        *ngFor="let user of userEntities.usersWithCurrent"
+        [value]="user._id"
+        >
+            {{ user.name + ' ' + user.surname }}
+        </ion-select-option>
+    </ion-select>
+</ion-item>

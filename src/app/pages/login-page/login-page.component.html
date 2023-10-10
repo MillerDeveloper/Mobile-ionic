@@ -1,0 +1,22 @@
+<form class="login-form" [formGroup]="loginFormGroup" (submit)="login()">
+    <ion-item>
+        <ion-label position="floating">Введите Ваш email</ion-label>
+        <ion-input type="email" formControlName="email"></ion-input>
+    </ion-item>
+    <ion-item>
+        <ion-label position="floating">Введите Ваш пароль</ion-label>
+        <ion-input type="password" formControlName="password"></ion-input>
+    </ion-item>
+    <ion-item>
+        <ion-label position="floating">Введите ID компании</ion-label>
+        <ion-input formControlName="idDB"></ion-input>
+    </ion-item>
+
+    <ion-button 
+        color="warning" 
+        expand="full" 
+        type="submit" 
+        class="button-submit"
+        [disabled]="loginFormGroup.invalid"
+    >Войти</ion-button>
+</form>

@@ -1,0 +1,87 @@
+<ng-content select="ion-header"></ng-content>
+
+<ion-content class="table-content" fullscreen>
+	<ion-refresher slot="fixed" pullFactor="0.5" pullMin="50" pullMax="200" (ionRefresh)="refreshTable()">
+		<ion-refresher-content></ion-refresher-content>
+	</ion-refresher>
+
+	<app-filter [config]="config" [tableConfig]="tableConfig" (setFilters)="reloadData.emit({config: $event, reloadConfig: {
+			startLoad: false,
+			showLoader: true,
+			concatData: false
+		}})"></app-filter>
+
+	<ion-list>
+		<ion-item-sliding *ngFor="let item of items">
+			<ion-item-options *ngIf="tableConfig.itemOptions.deleteItem" side="start" (click)="deleteItem.emit(item)">
+				<ion-item-option>Удалить</ion-item-option>
+			</ion-item-options>
+
+			<ion-item>
+
+				<ion-avatar *ngIf="itemsService.getFieldValue(item, 'avatar')" slot="start" class="item-image">
+					<img *ngIf="itemsService.getFieldValue(item, 'avatar'); else noImage"
+						[src]="filesService.getAvatar(itemsService.getFieldValue(item, 'avatar'), filesConfig)">
+					<ng-template #noImage>
+						<img src="https://www.gravatar.com/avatar/120?d=monsterid&f=y">
+					</ng-template>
+				</ion-avatar>
+				<ion-label class="item-info">
+					<div *ngFor="let column of columns" [ngSwitch]="column.nameDef">
+						<p *ngSwitchCase="'title'" class="item-info__title">
+							{{ item.title }}
+						</p>
+						<p *ngSwitchCase="'name'" class="item-info__name">
+							{{ item.name }}
+						</p>
+						<p *ngSwitchCase="'phone'" (click)="callNumber.callNumber(item, true)" class="item-info__title">
+							{{ item.phone }}
+						</p>
+						<app-state *ngSwitchCase="'state'" class="item-info__state" [state]="item.state"
+							[config]="config" (updateState)="item.state = $event; updateItem.emit(item)"></app-state>
+						<p *ngSwitchCase="'dateCreated'" class="item-info__dateCreated">
+							{{ item.dateCreated | date:'dd.MM.yyyy | HH.mm' }}
+						</p>
+						<p *ngSwitchCase="'dateStart'" class="item-info__dateStart">
+							Дата начала {{ (item.dateStart || item.start) | date:'dd.MM.yyyy | HH.mm' }}
+						</p>
+						<p *ngSwitchCase="'dateEnd'" class="item-info__dateEnd">
+							Дата окончания {{ (item.dateEnd || item.end) | date:'dd.MM.yyyy | HH.mm' }}
+						</p>
+						<p *ngSwitchCase="'price'">
+							Стоимость {{ item.price }} {{ item.classification.currency }}
+						</p>
+						<p *ngSwitchCase="'description'" class="item-info__description">
+							{{ itemsService.getFieldValue(item, 'description') }}
+						</p>
+						<ion-item *ngSwitchCase="'paymentState'">
+							<ion-checkbox color="dark" slot="start" disabled
+								[checked]="item?.paymentState.completed"></ion-checkbox>
+							<ion-label>{{ column.name }}</ion-label>
+						</ion-item>
+						<ion-item *ngSwitchCase="'dateToCompletePayment'">
+							<ion-datetime [value]="item?.paymentState.dateToComplete" disabled
+								display-timezone="utc"></ion-datetime>
+							<ion-label>{{ column.name }}</ion-label>
+						</ion-item>
+					</div>
+				</ion-label>
+			</ion-item>
+
+			<ion-item-options *ngIf="tableConfig.itemOptions.openCard" side="end" (ionSwipe)="openCardItem(item)">
+				<ion-item-option expandable>Открыть</ion-item-option>
+			</ion-item-options>
+		</ion-item-sliding>
+	</ion-list>
+
+	<ion-infinite-scroll threshold="1000px" id="infinite-scroll" (ionInfinite)="loadMoreData($event)">
+		<ion-infinite-scroll-content loading-spinner="bubbles" loading-text="Загрузка...">
+		</ion-infinite-scroll-content>
+	</ion-infinite-scroll>
+
+	<ion-fab vertical="bottom" horizontal="end" slot="fixed" *ngIf="tableConfig.itemOptions.addItem">
+		<ion-fab-button (click)="addItem.emit()">
+			<ion-icon name="add"></ion-icon>
+		</ion-fab-button>
+	</ion-fab>
+</ion-content>

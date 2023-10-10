@@ -1,0 +1,49 @@
+<ion-header translucent>
+    <ion-toolbar>
+        <ion-title>Создать встречу</ion-title>
+        <ion-buttons slot="end">
+            <ion-button (click)="modalController.dismiss()">Закрыть</ion-button>
+        </ion-buttons> 
+    </ion-toolbar>
+</ion-header>
+<ion-content fullscreen>
+    <form [formGroup]="meetingFormGroup" (submit)="onSubmit()">
+        <ion-item>
+            <ion-label position="floating">Введите название</ion-label>
+            <ion-input formControlName="title" required></ion-input>
+        </ion-item>
+        <ion-item>
+            <ion-label position="floating">Введите дату начала</ion-label>
+            <ion-datetime formControlName="start" displayFormat="DD MMM YYYY HH:mm"></ion-datetime>
+        </ion-item>
+        <ion-item>
+            <ion-label position="floating">Введите дату окончания</ion-label>
+            <ion-datetime formControlName="end" displayFormat="DD MMM YYYY HH:mm"></ion-datetime>
+        </ion-item>
+
+        <ion-select 
+            multiple="true" 
+            cancelText="Отмена"
+            [interfaceOptions]="{
+                header: 'Ответственный'
+            }"
+            position="floating"
+            formControlName="responsible"
+        >
+            <ion-select-option 
+                *ngFor="let user of userEntities.usersWithCurrent"
+                [value]="user._id"
+            >
+                {{ user.name + ' ' + user.surname }}
+            </ion-select-option>
+        </ion-select>
+
+        <ion-button 
+            color="warning" 
+            expand="full" 
+            type="submit" 
+            class="button-submit"
+            [disabled]="meetingFormGroup.invalid"
+        >Создать</ion-button>
+    </form>
+</ion-content>

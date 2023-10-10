@@ -1,0 +1,12 @@
+<section class="logs">
+    <div class="log" *ngFor="let log of logs">
+        <div class="log-header">
+            Изменено поле <strong>{{ getFieldName(log.info?.fieldNameDef || '') }}</strong> с значения
+            <em>{{ getLogValue('previous', log) }}</em> на
+            <em>{{ getLogValue('current', log) }}</em>
+        </div>
+        <div class="log-content">
+
+        </div>
+    </div>
+</section>

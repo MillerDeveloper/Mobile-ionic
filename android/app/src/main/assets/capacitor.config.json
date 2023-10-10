@@ -1,0 +1,6 @@
+{
+	"appId": "bcs.mobile",
+	"appName": "BCS Mobile",
+	"webDir": "www",
+	"bundledWebRuntime": false
+}

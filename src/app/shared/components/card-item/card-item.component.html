@@ -1,0 +1,213 @@
+<ng-content></ng-content>
+
+<ion-content
+  *ngIf="selectedSegment === 'fields'"
+	fullscreen
+>
+  <div class="tabs">
+    <div class="tab" *ngFor="let tab of tabs" (click)="toggleTab(tab)">
+      <div class="tab-label">
+        {{ tab.tab.label }}
+      </div>
+      <form class="tab-content" [formGroup]="fieldsGroup" [hidden]="!tab.tab.isActive">
+        <div *ngIf="tab.fields.length > 0; else noOneFields">
+          <div *ngFor="let field of tab.fields">
+            <div [ngSwitch]="field.nameDef">
+              <div
+                *ngSwitchCase="'state'"
+                class="custom-field state"
+              >
+                <app-state
+                  [state]="fieldsGroup.value[field.nameDef]"
+                  [config]="config"
+                  (updateState)="fieldsGroup.value[field.nameDef] = $event"
+                ></app-state>
+              </div>
+
+              <ion-select
+                *ngSwitchCase="'responsible'"
+                class="custom-field"
+                multiple="true"
+                cancelText="Отмена"
+                [placeholder]="field.label"
+                [formControlName]="field.nameDef"
+                [interfaceOptions]="{
+                  header: field.label
+                }"
+              >
+                <ion-select-option
+                  *ngFor="let user of userEntities.usersWithCurrent"
+                  [value]="user._id"
+                >
+                  {{ user.name + ' ' + user.surname }}
+                </ion-select-option>
+              </ion-select>
+
+              <ion-item *ngSwitchCase="'paymentState'">
+								<ion-checkbox color="dark" slot="start" [formControlName]="field.nameDef"></ion-checkbox>
+								<ion-label>{{ field.label }}</ion-label>
+							</ion-item>
+							<ion-item *ngSwitchCase="'dateToCompletePayment'">
+								<ion-datetime [value]="item?.paymentState.dateToComplete" [formControlName]="field.nameDef" display-timezone="utc"></ion-datetime>
+								<ion-label>{{ field.label }}</ion-label>
+							</ion-item>
+
+              <ion-select
+                *ngSwitchCase="'currency'"
+                class="custom-field"
+                cancelText="Отмена"
+                [placeholder]="field.label"
+                [formControlName]="field.nameDef"
+                [interfaceOptions]="{
+                  header: field.label
+                }"
+              >
+                <ion-select-option
+                  *ngFor="let currency of currentCompany.settings.global.currencies"
+                  [value]="currency"
+                >
+                  {{ currency }}
+                </ion-select-option>
+              </ion-select>
+
+              <ion-select
+                *ngSwitchCase="'categories'"
+                class="custom-field"
+                cancelText="Отмена"
+                [placeholder]="field.label"
+                [formControlName]="field.nameDef"
+                [interfaceOptions]="{
+                  header: field.label
+                }"
+              >
+                <ion-select-option
+                  *ngFor="let category of classification.categories"
+                  [value]="category.name"
+                >
+                  {{ category.name }}
+                </ion-select-option>
+              </ion-select>
+
+              <ion-select
+                *ngSwitchCase="'unit'"
+                class="custom-field"
+                cancelText="Отмена"
+                [placeholder]="field.label"
+                [formControlName]="field.nameDef"
+                [interfaceOptions]="{
+                    header: field.label
+                }"
+              >
+                <ion-select-option
+                  *ngFor="let unit of currentCompany.settings.global.units"
+                  [value]="unit"
+                >
+                  {{ unit }} шт.
+                </ion-select-option>
+              </ion-select>
+
+              <div *ngSwitchCase="'avatar'" class="avatar">
+                <img
+                  *ngIf="itemsService.getFieldValue(item, 'avatar'); else noImage"
+                  [src]="filesService.getAvatar(itemsService.getFieldValue(item, 'avatar'), filesConfig)"
+                >
+                <input
+                    style="display: none"
+                    #fileInput
+                    type="file" (change)="uploadFile($event)"
+                >
+                <ion-button color="primary" expand="full" (click)="fileInput.click()">
+                  <ion-icon name="add-outline"></ion-icon>
+                </ion-button>
+                <ng-template #noImage>
+                  <img src="https://www.gravatar.com/avatar/120?d=monsterid&f=y">
+                </ng-template>
+              </div>
+
+              <div *ngSwitchDefault>
+                <div [ngSwitch]="field.fieldType">
+                  <div *ngSwitchCase="'field'">
+                    <ion-item *ngIf="field.nameDef; else formControlById">
+                      <ion-label position="floating">{{ field.label }}</ion-label>
+                      <ion-textarea [formControlName]="field.nameDef"></ion-textarea>
+                    </ion-item>
+                    <ng-template #formControlById>
+                      <ion-item>
+                        <ion-label position="floating">{{ field.label }}</ion-label>
+                        <ion-textarea [formControlName]="field._id"></ion-textarea>
+                      </ion-item>
+                    </ng-template>
+                  </div>
+
+                  <ion-checkbox
+                    *ngSwitchCase="'checkbox'"
+                    [value]="!!fieldsGroup.value[field.nameDef]"
+                  ></ion-checkbox>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <ng-template #noOneFields>
+          <p [style.textAlign]="'center'">
+            Нет ни одного поля
+          </p>
+        </ng-template>
+      </form>
+    </div>
+  </div>
+
+  <ion-fab vertical="bottom" horizontal="start" slot="fixed" *ngIf="item.phone">
+		<ion-fab-button (click)="callNumber.callNumber(item.phone, true)">
+		  <ion-icon name="call-outline"></ion-icon>
+		</ion-fab-button>
+	</ion-fab>
+</ion-content>
+
+<ion-content *ngIf="selectedSegment === 'tasks'">
+  <app-tasks-page
+    class="ion-page"
+    [item]="item"
+    [tableConfig]="{
+      filters: {
+        responsible: true
+      },
+      itemOptions: {
+        deleteItem: true,
+        openCard: false,
+        addItem: true
+      }
+    }"
+  ></app-tasks-page>
+</ion-content>
+
+<ion-content *ngIf="selectedSegment === 'meetings'">
+  <app-meetings-page
+    class="ion-page"
+    [item]="item"
+    [tableConfig]="{
+      filters: {
+        responsible: true
+      },
+      itemOptions: {
+        deleteItem: true,
+        openCard: false,
+        addItem: true
+      }
+    }"
+  ></app-meetings-page>
+</ion-content>
+
+<ion-footer class="ion-no-border">
+  <ion-segment [value]="selectedSegment" (ionChange)="changeSegment($event)">
+    <ion-segment-button value="fields">
+      <ion-label>Поля</ion-label>
+    </ion-segment-button>
+    <ion-segment-button value="tasks">
+      <ion-label>Задачи</ion-label>
+    </ion-segment-button>
+    <ion-segment-button value="meetings">
+      <ion-label>Встречи</ion-label>
+    </ion-segment-button>
+  </ion-segment>
+</ion-footer>
